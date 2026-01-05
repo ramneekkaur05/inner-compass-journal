@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+  }
+
+  * {
+    @apply border-neutral-200;
+  }
+
+  body {
+    @apply text-neutral-900;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    background-color: #fbfbf8;
+    background-image:
+      radial-gradient(120% 120% at 0% 0%, rgba(120, 120, 120, 0.08), transparent 55%),
+      radial-gradient(110% 110% at 100% 0%, rgba(120, 120, 120, 0.06), transparent 55%),
+      radial-gradient(110% 110% at 0% 100%, rgba(120, 120, 120, 0.06), transparent 55%),
+      radial-gradient(120% 120% at 100% 100%, rgba(120, 120, 120, 0.08), transparent 60%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight text-brand-700;
+  }
+
+  /* Input focus state - calm and subtle */
+  input:focus, textarea:focus {
+    @apply ring-1 ring-brand-200 border-brand-300;
+  }
+}
+
+@layer components {
+  /* Cards - calm and grounded */
+  .card {
+    @apply bg-violet-50 rounded-lg border border-violet-200 p-4 sm:p-6 transition-all duration-200;
+  }
+
+  .card:hover {
+    @apply border-violet-300 shadow-sm;
+  }
+
+  /* Input fields - distraction-free */
+  .input-field {
+    @apply w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-indigo-50 border border-indigo-200 text-neutral-900 placeholder-neutral-500 focus:bg-indigo-50 focus:ring-1 focus:ring-brand-300 focus:border-brand-300 outline-none transition-colors text-sm sm:text-base;
+  }
+
+  /* Date input smooth scrolling */
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="time"],
+  select {
+    @apply cursor-pointer transition-all duration-200;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply px-6 py-2.5 bg-brand-600 text-white rounded-lg font-medium hover:bg-brand-700 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply px-6 py-2.5 bg-amber-100 text-neutral-900 rounded-lg font-medium border border-amber-200 hover:bg-amber-200 active:bg-amber-300 transition-colors duration-150;
+  }
+
+  /* Section titles - clean hierarchy */
+  .section-title {
+    @apply text-lg font-semibold text-neutral-900 mb-3;
+  }
+
+  /* Textareas - premium notebook feel */
+  .textarea-calm {
+    @apply w-full px-3 sm:px-4 py-3 rounded-lg bg-indigo-50 border border-indigo-200 text-neutral-900 placeholder-neutral-500 focus:bg-indigo-50 focus:ring-1 focus:ring-brand-300 focus:border-brand-300 outline-none transition-colors text-sm sm:text-base leading-relaxed;
+    scrollbar-gutter: stable;
+    resize: none;
+    display: block;
+    box-sizing: border-box;
+    height: 200px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  @media (min-width: 640px) {
+    .textarea-calm {
+      height: 280px;
+      min-height: 280px;
+      max-height: 450px;
+    }
+  }
+
+  /* Pen-style cursor for writing surfaces */
+  textarea,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  input[type="number"],
+  [contenteditable="true"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath d='M3 21l5.5-1.5L18 10l-4-4L4.5 15.5 3 21z' fill='%23222222'/%3E%3Cpath d='M14 6l4 4 2-2-4-4-2 2z' fill='%23444444'/%3E%3Cpath d='M11 14l-1.5 4.5L14 17l-3-3z' fill='%23f5f5f5'/%3E%3Ccircle cx='12' cy='12' r='0.6' fill='%23000000'/%3E%3C/svg%3E") 0 24, text;
+  }
+
+  /* Subtle divider */
+  .divider {
+    @apply border-t border-neutral-200;
+  }
+
+  /* Navigation pill style */
+  .nav-pill {
+    @apply rounded-lg transition-colors duration-150;
+  }
+
+  /* Hide scrollbars on nav list */
+  .nav-scroll {
+    scrollbar-width: none;
+  }
+  .nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Light mode scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400;
+}
+
+/* Smooth and controlled scrolling for select/input elements */
+select, input[type="date"], input[type="datetime-local"], input[type="time"] {
+  scroll-behavior: smooth;
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a8a29e #f5f5f4;
+}
+
+/* Ensure smooth momentum scrolling on iOS */
+-webkit-overflow-scrolling: touch;
+
+/* Premium focus styles */
+*:focus-visible {
+  outline: 2px solid rgba(168, 85, 247, 0.5);
+  outline-offset: 2px;
+}
