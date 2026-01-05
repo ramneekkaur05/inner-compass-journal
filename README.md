@@ -1,4 +1,5 @@
 # 🌟 Intelligent Journal - Premium Journaling Application
+##  🔴 Website link: https://inner-compass-journal.ve
 
 A production-ready, full-stack intelligent journaling application built with Next.js, React, TypeScript, and Supabase.
 
