@@ -1,13 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Navigation from '@/components/navigation/Navigation';
-
-const inter = Inter({ subsets: ['latin'] });
+import BohoDecorations from '@/components/ui/BohoDecorations';
 
 export const metadata: Metadata = {
-  title: 'Intelligent Journal - Your Personal Growth Companion',
-  description: 'A premium journaling application for mindful living and personal growth',
+  title: 'Inner Compass - Boho Journal',
+  description: 'A beautiful boho-inspired journaling experience for mindful living and personal growth',
   viewport: 'width=device-width, initial-scale=1.0, viewport-fit=cover',
 };
 
@@ -18,8 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex flex-col md:flex-row min-h-screen">
+      <body>
+        {/* Animated Boho Decorations */}
+        <BohoDecorations />
+        
+        <div className="flex flex-col md:flex-row min-h-screen relative z-10">
           <Navigation />
           <div className="flex-1 w-full pt-16 md:pt-0">
             {children}

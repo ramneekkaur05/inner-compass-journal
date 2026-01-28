@@ -204,6 +204,40 @@ CREATE POLICY "Users can delete own guided reflections"
   USING (auth.uid() = user_id);
 
 -- ============================================
+-- THOUGHTS TABLE
+-- ============================================
+CREATE TABLE thoughts (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes for thoughts
+CREATE INDEX idx_thoughts_user_id ON thoughts(user_id);
+CREATE INDEX idx_thoughts_created_at ON thoughts(created_at DESC);
+
+-- Row Level Security for thoughts
+ALTER TABLE thoughts ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own thoughts"
+  ON thoughts FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own thoughts"
+  ON thoughts FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own thoughts"
+  ON thoughts FOR UPDATE
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own thoughts"
+  ON thoughts FOR DELETE
+  USING (auth.uid() = user_id);
+
+-- ============================================
 -- STORAGE BUCKET FOR VISION BOARD IMAGES
 -- ============================================
 -- Run this in the Supabase dashboard Storage section:

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import { getCurrentUser } from '@/lib/auth';
 import {
@@ -215,11 +216,25 @@ function StatementItem({
   };
 
   return (
-    <div className="flex items-start gap-3 group p-3 rounded-lg hover:bg-purple-50/50 transition-colors">
+    <motion.div 
+      className="flex items-start gap-3 group p-3 rounded-lg transition-all duration-300"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      whileHover={{ 
+        x: 4,
+        backgroundColor: 'rgba(139, 157, 131, 0.1)'
+      }}
+      style={{
+        background: 'rgba(255, 255, 255, 0.5)',
+        position: 'relative',
+        zIndex: 15,
+        pointerEvents: 'auto'
+      }}
+    >
       <span className="text-purple-600 mt-1">•</span>
       
       {isEditing ? (
-        <input
+        <motion.input
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -231,26 +246,59 @@ function StatementItem({
               setIsEditing(false);
             }
           }}
-          className="flex-1 px-2 py-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-200"
+          className="flex-1 px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 font-medium handwritten min-w-0"
+          style={{
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderColor: 'var(--boho-sage)',
+            color: 'var(--boho-rust)',
+            fontSize: '1.35rem',
+            position: 'relative',
+            zIndex: 20,
+            pointerEvents: 'auto'
+          }}
           autoFocus
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
         />
       ) : (
-        <span
-          onClick={() => setIsEditing(true)}
-          className="flex-1 cursor-pointer text-neutral-700"
+        <motion.span
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(true);
+          }}
+          className="flex-1 cursor-pointer font-medium handwritten transition-all duration-200 break-words"
+          style={{
+            fontSize: '1.35rem',
+            color: 'var(--boho-rust)',
+            position: 'relative',
+            zIndex: 15,
+            lineHeight: '1.6',
+            fontFamily: 'Caveat, cursive',
+            fontWeight: '500'
+          }}
+          whileHover={{ opacity: 0.8 }}
         >
           {statement.content}
-        </span>
+        </motion.span>
       )}
 
-      <button
+      <motion.button
         onClick={() => onDelete(statement.id)}
-        className="opacity-0 group-hover:opacity-100 text-neutral-400 hover:text-red-500 transition-all"
+        className="opacity-0 group-hover:opacity-100 transition-all flex-shrink-0"
+        style={{
+          color: 'var(--boho-rust)',
+          cursor: 'pointer',
+          position: 'relative',
+          zIndex: 20
+        }}
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.9 }}
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   );
 }

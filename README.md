@@ -12,15 +12,18 @@ A production-ready, full-stack intelligent journaling application built with Nex
 - **🌿 Guided Reflections**: Deep introspection with themed prompts
 - **📊 Insights**: Visualize patterns with mood trends and completion charts
 - **⚙️ Settings**: Personalize your experience with auto-saving preferences
+- **🌻 Thought Letters**: Write and save thoughts as beautiful letter envelopes with philosophy quotes
+- **📜 Crumpled Paper Texture**: Enhanced UI with realistic crumpled paper background for authentic journal feel
 
 ## 🚀 Tech Stack
 
 - **Frontend**: Next.js 14 (App Router), React, TypeScript
-- **Styling**: Tailwind CSS with custom premium design
+- **Styling**: Tailwind CSS with custom premium design + crumpled paper texture background
 - **Backend**: Supabase (Auth, Database, Storage)
 - **Charts**: Recharts
-- **Animations**: Framer Motion
+- **Animations**: Framer Motion (smooth transitions, letter folding animations, page transitions)
 - **Date Handling**: date-fns
+- **Typography**: Custom fonts (Playfair Display, Caveat, Merriweather)
 
 ## 📦 Installation
 
@@ -119,6 +122,16 @@ journal/
 
 ## 🎨 Key Features Explained
 
+### Crumpled Paper Background
+The app now features a realistic crumpled paper texture throughout all sections, giving it an authentic journal-like appearance. The background uses high-quality texture images for enhanced visual aesthetics.
+
+### Thoughts & Ideas Section
+- Write and store thoughts as beautiful sunflower-decorated letter envelopes 🌻
+- Each thought displays with a random daily philosophy quote for inspiration
+- Full-screen modal view for reading complete letters
+- Smooth page-folding animation (150ms) when saving
+- Letter history organized by date
+
 ### Auto-Save Functionality
 All user input is automatically saved to Supabase with debouncing (800ms delay) to prevent excessive API calls. No "Save" buttons needed!
 
@@ -146,6 +159,7 @@ All user input is automatically saved to Supabase with debouncing (800ms delay) 
 | Page | Description |
 |------|-------------|
 | **Today** | Daily journal with mood, gratitude, goals, and checklist |
+| **Thoughts** | Write and save thoughts as letter envelopes with daily philosophy quotes |
 | **Vision Board** | Grid of vision items with images and affirmations by category |
 | **Identity** | Four sections: Who I'm Becoming, Core Values, Beliefs, Habits |
 | **Future Letters** | Write and lock letters to your future self |
@@ -213,11 +227,12 @@ This app is designed to feel like a **premium digital journal** - calm, elegant,
 ## 💡 Tips for Users
 
 1. **Start with Today**: Log your mood and daily thoughts
-2. **Build Your Vision**: Add images and affirmations that inspire you
-3. **Define Your Identity**: Write who you're becoming
-4. **Write to Future You**: Lock letters for motivation
-5. **Track Progress**: Check insights to see your patterns
-6. **Reflect Deeply**: Use guided prompts weekly
+2. **Capture Thoughts**: Write ideas and thoughts as letter envelopes - they'll inspire you with daily philosophy quotes
+3. **Build Your Vision**: Add images and affirmations that inspire you
+4. **Define Your Identity**: Write who you're becoming
+5. **Write to Future You**: Lock letters for motivation
+6. **Track Progress**: Check insights to see your patterns
+7. **Reflect Deeply**: Use guided prompts weekly
 
 ## 🤝 Contributing
 

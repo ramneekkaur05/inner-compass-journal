@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import NavItem from './NavItem';
 import { getCurrentUser, signOut } from '@/lib/auth';
 import { prefetchPageData } from '@/lib/prefetch';
@@ -52,59 +53,134 @@ export default function Navigation() {
   return (
     <>
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-amber-50 border-b border-amber-200 flex items-center justify-between px-4 z-50">
-        <h1 className="text-lg font-semibold text-neutral-900">Inner Compass</h1>
-        <button
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-2 hover:bg-amber-100 rounded-lg transition-colors"
-        >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
+      <motion.div 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 100 }}
+        className="md:hidden fixed top-0 left-0 right-0 h-16 z-50"
+        style={{
+          background: 'linear-gradient(135deg, rgba(245, 241, 232, 0.95) 0%, rgba(232, 220, 196, 0.95) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '2px solid var(--boho-sand)',
+          boxShadow: '0 4px 20px rgba(139, 157, 131, 0.15)'
+        }}
+      >
+        <div className="flex items-center justify-between px-4 h-full">
+          <motion.h1 
+            className="text-lg font-semibold"
+            style={{ 
+              fontFamily: 'Playfair Display, serif',
+              color: 'var(--boho-rust)',
+              textShadow: '0 2px 4px rgba(184, 92, 56, 0.1)'
+            }}
+            whileHover={{ scale: 1.05 }}
+          >
+            ✺ Inner Compass
+          </motion.h1>
+          <motion.button
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="p-2 rounded-xl transition-all duration-300"
+            style={{
+              background: isMobileOpen ? 'var(--boho-terracotta)' : 'transparent',
+              color: isMobileOpen ? 'white' : 'var(--boho-rust)'
+            }}
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </motion.button>
+        </div>
+      </motion.div>
 
       {/* Mobile Overlay */}
-      {isMobileOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40 mt-16"
-          onClick={() => setIsMobileOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden fixed inset-0 bg-black/50 z-40 mt-16"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Desktop Sidebar */}
-      <nav className={`hidden md:flex fixed left-0 top-0 h-screen bg-amber-50 border-r border-amber-200 p-6 flex-col transition-all duration-300 ${
-        isExpanded ? 'w-64' : 'w-24'
-      }`}>
+      <motion.nav 
+        initial={{ x: -300 }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 80 }}
+        className={`hidden md:flex fixed left-0 top-0 h-screen p-6 flex-col transition-all duration-300 ${
+          isExpanded ? 'w-64' : 'w-24'
+        }`}
+        style={{
+          background: 'linear-gradient(180deg, rgba(245, 241, 232, 0.95) 0%, rgba(232, 220, 196, 0.95) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderRight: '2px solid var(--boho-sand)',
+          boxShadow: '4px 0 20px rgba(139, 157, 131, 0.15)'
+        }}
+      >
         {/* Toggle Button */}
-        <button
+        <motion.button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="mb-8 p-2 hover:bg-amber-100 rounded-lg transition-colors text-neutral-700 self-end"
+          className="mb-8 p-2 rounded-xl transition-all duration-300 self-end"
+          style={{
+            background: 'rgba(139, 157, 131, 0.1)',
+            color: 'var(--boho-olive)'
+          }}
+          whileHover={{ 
+            scale: 1.1, 
+            background: 'var(--boho-sage)',
+            color: 'white'
+          }}
+          whileTap={{ scale: 0.95 }}
           title={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {isExpanded ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            )}
-          </svg>
-        </button>
+          <motion.svg 
+            className="w-5 h-5" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+            animate={{ rotate: isExpanded ? 0 : 180 }}
+            transition={{ duration: 0.3 }}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </motion.svg>
+        </motion.button>
 
         {/* Branding */}
-        <div className={`mb-12 transition-all ${isExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>
-          <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">
-            Inner Compass
-          </h1>
-          <p className="text-sm text-neutral-500 mt-2">Personal Growth</p>
-        </div>
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mb-12"
+            >
+              <h1 className="text-2xl font-semibold tracking-tight" style={{ 
+                fontFamily: 'Playfair Display, serif',
+                color: 'var(--boho-rust)',
+                textShadow: '0 2px 4px rgba(184, 92, 56, 0.1)'
+              }}>
+                ✺ Inner Compass
+              </h1>
+              <p className="text-sm mt-2 handwritten" style={{ color: 'var(--boho-olive)' }}>
+                Personal Growth
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Navigation Items */}
         <div className="flex-1 space-y-1 overflow-y-auto nav-scroll">
-          <NavItem href="/" icon="📝" label="Day Journal" isExpanded={isExpanded} />
+          <NavItem href="/" icon="📝" label="Daily Review" isExpanded={isExpanded} />
+          <NavItem href="/thoughts" icon="💭" label="Thoughts" isExpanded={isExpanded} />
           <NavItem href="/guided-reflections" icon="🌿" label="Reflections" isExpanded={isExpanded} />
           <NavItem href="/vision-board" icon="🌠" label="Vision Board" isExpanded={isExpanded} />
-          <NavItem href="/identity" icon="🧑" label="Identity" isExpanded={isExpanded} />
           <NavItem href="/future-letters" icon="✉️" label="Future Letters" isExpanded={isExpanded} />
           <NavItem href="/goals" icon="🎯" label="Goals" isExpanded={isExpanded} />
           <NavItem href="/insights" icon="📊" label="Insights" isExpanded={isExpanded} />
@@ -112,47 +188,84 @@ export default function Navigation() {
         </div>
 
         {/* Logout Button */}
-        <button
+        <motion.button
           onClick={handleLogout}
-          className={`mt-8 w-full px-4 py-2.5 text-left text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-all duration-200 ease-out flex items-center gap-3 font-medium text-sm hover:-translate-y-0.5 hover:shadow-md hover:shadow-neutral-200/80 hover:scale-[1.02] ${
+          className={`mt-8 w-full px-4 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-3 font-medium text-sm ${
             !isExpanded && 'justify-center'
           }`}
+          style={{
+            background: 'linear-gradient(135deg, rgba(139, 157, 131, 0.2), rgba(107, 127, 94, 0.2))',
+            color: 'var(--boho-rust)',
+            fontFamily: 'Playfair Display, serif'
+          }}
+          whileHover={{ 
+            scale: 1.02,
+            y: -2,
+            background: 'linear-gradient(135deg, var(--boho-sage), var(--boho-olive))',
+            color: 'white'
+          }}
+          whileTap={{ scale: 0.98 }}
           title="Logout"
         >
           <span>↪️</span>
           {isExpanded && <span>Logout</span>}
-        </button>
-      </nav>
+        </motion.button>
+      </motion.nav>
 
       {/* Mobile Sidebar Menu */}
-      <div className={`md:hidden fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-amber-50 border-r border-amber-200 p-6 flex flex-col z-40 transform transition-transform duration-300 ${
-        isMobileOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        {/* Navigation Items */}
-        <div className="flex-1 space-y-1 overflow-y-auto nav-scroll">
-          <NavItem href="/" icon="📝" label="Day Journal" isExpanded={true} />
-          <NavItem href="/guided-reflections" icon="🌿" label="Reflections" isExpanded={true} />
-          <NavItem href="/vision-board" icon="🌠" label="Vision Board" isExpanded={true} />
-          <NavItem href="/identity" icon="🧑" label="Identity" isExpanded={true} />
-          <NavItem href="/future-letters" icon="✉️" label="Future Letters" isExpanded={true} />
-          <NavItem href="/goals" icon="🎯" label="Goals" isExpanded={true} />
-          <NavItem href="/insights" icon="📊" label="Insights" isExpanded={true} />
-          <NavItem href="/settings" icon="⚙️" label="Settings" isExpanded={true} />
-        </div>
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div 
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            exit={{ x: -300 }}
+            transition={{ type: "spring", stiffness: 100 }}
+            className="md:hidden fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 p-6 flex flex-col z-40"
+            style={{
+              background: 'linear-gradient(180deg, rgba(245, 241, 232, 0.98) 0%, rgba(232, 220, 196, 0.98) 100%)',
+              backdropFilter: 'blur(10px)',
+              borderRight: '2px solid var(--boho-sand)',
+              boxShadow: '4px 0 20px rgba(139, 157, 131, 0.15)'
+            }}
+          >
+            {/* Navigation Items */}
+            <div className="flex-1 space-y-1 overflow-y-auto nav-scroll">
+              <NavItem href="/" icon="📝" label="Daily Review" isExpanded={true} />
+              <NavItem href="/thoughts" icon="💭" label="Thoughts" isExpanded={true} />
+              <NavItem href="/guided-reflections" icon="🌿" label="Reflections" isExpanded={true} />
+              <NavItem href="/vision-board" icon="🌠" label="Vision Board" isExpanded={true} />
+              <NavItem href="/future-letters" icon="✉️" label="Future Letters" isExpanded={true} />
+              <NavItem href="/goals" icon="🎯" label="Goals" isExpanded={true} />
+              <NavItem href="/insights" icon="📊" label="Insights" isExpanded={true} />
+              <NavItem href="/settings" icon="⚙️" label="Settings" isExpanded={true} />
+            </div>
 
-        {/* Logout Button */}
-        <button
-          onClick={() => {
-            handleLogout();
-            setIsMobileOpen(false);
-          }}
-          className="mt-8 w-full px-4 py-2.5 text-left text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-all duration-200 flex items-center gap-3 font-medium text-sm"
-          title="Logout"
-        >
-          <span>↪️</span>
-          <span>Logout</span>
-        </button>
-      </div>
+            {/* Logout Button */}
+            <motion.button
+              onClick={() => {
+                handleLogout();
+                setIsMobileOpen(false);
+              }}
+              className="mt-8 w-full px-4 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-3 font-medium text-sm"
+              style={{
+                background: 'linear-gradient(135deg, rgba(139, 157, 131, 0.2), rgba(107, 127, 94, 0.2))',
+                color: 'var(--boho-rust)',
+                fontFamily: 'Playfair Display, serif'
+              }}
+              whileHover={{ 
+                scale: 1.02,
+                background: 'linear-gradient(135deg, var(--boho-sage), var(--boho-olive))',
+                color: 'white'
+              }}
+              whileTap={{ scale: 0.98 }}
+              title="Logout"
+            >
+              <span>↪️</span>
+              <span>Logout</span>
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Desktop Spacer */}
       <div className={`hidden md:block transition-all duration-300 ${isExpanded ? 'w-64' : 'w-24'}`} />

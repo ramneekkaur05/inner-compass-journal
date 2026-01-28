@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface MoodSelectorProps {
   value: string | null;
@@ -9,11 +10,11 @@ interface MoodSelectorProps {
 }
 
 const moods = [
-  { label: 'Excellent', color: '#10b981', shortLabel: 'Great' },
-  { label: 'Good', color: '#0ea5e9', shortLabel: 'Good' },
-  { label: 'Neutral', color: '#f59e0b', shortLabel: 'Okay' },
-  { label: 'Challenging', color: '#8b5cf6', shortLabel: 'Low' },
-  { label: 'Difficult', color: '#dc2626', shortLabel: 'Struggling' },
+  { label: 'Excellent', color: '#8B9D83', emoji: '✨', shortLabel: 'Great' },
+  { label: 'Good', color: '#D4A574', emoji: '🌿', shortLabel: 'Good' },
+  { label: 'Neutral', color: '#C89F81', emoji: '🍂', shortLabel: 'Okay' },
+  { label: 'Challenging', color: '#D97757', emoji: '🌙', shortLabel: 'Low' },
+  { label: 'Difficult', color: '#B85C38', emoji: '🌊', shortLabel: 'Struggling' },
 ];
 
 export default function MoodSelector({ value, color, onChange }: MoodSelectorProps) {
@@ -29,26 +30,68 @@ export default function MoodSelector({ value, color, onChange }: MoodSelectorPro
   };
 
   return (
-    <div className="flex gap-4 flex-wrap justify-center items-center">
-      {moods.map((mood) => (
-        <button
+    <div className="flex gap-3 flex-wrap justify-center items-center" style={{ position: 'relative', zIndex: 20 }}>
+      {moods.map((mood, index) => (
+        <motion.button
           key={mood.label}
           onClick={() => handleSelect(mood.label, mood.color)}
-          className={`
-            flex flex-col items-center gap-2 px-6 py-3 rounded-lg border-2 transition-all duration-200
-            ${
-              selected === mood.label
-                ? 'border-brand-300 bg-brand-50 scale-105'
-                : 'border-violet-200 bg-violet-50 hover:border-violet-300 hover:scale-102'
-            }
-          `}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1, type: "spring", stiffness: 100 }}
+          whileHover={{ 
+            scale: 1.15,
+            y: -8,
+            transition: { duration: 0.15, ease: "easeOut" }
+          }}
+          whileTap={{ scale: 0.9 }}
+          className="flex flex-col items-center gap-2 px-4 py-3 rounded-2xl transition-shadow duration-150"
+          style={{
+            background: selected === mood.label 
+              ? `linear-gradient(135deg, ${mood.color}33, ${mood.color}22)`
+              : 'rgba(255, 255, 255, 0.6)',
+            border: `2px solid ${selected === mood.label ? mood.color : 'var(--boho-sand)'}`,
+            boxShadow: selected === mood.label 
+              ? `0 6px 25px ${mood.color}50`
+              : '0 2px 10px rgba(139, 157, 131, 0.1)',
+            cursor: 'pointer',
+            position: 'relative',
+            zIndex: 20,
+            transform: selected === mood.label ? 'scale(1.05)' : 'scale(1)',
+            willChange: 'transform'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = `0 12px 35px ${mood.color}60`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = selected === mood.label 
+              ? `0 6px 25px ${mood.color}50`
+              : '0 2px 10px rgba(139, 157, 131, 0.1)';
+          }}
         >
-          <span className="text-sm font-medium text-neutral-700">{mood.label}</span>
-          <div 
+          <motion.span 
+            className="text-2xl"
+            animate={{ 
+              rotate: selected === mood.label ? [0, -10, 10, -10, 0] : 0 
+            }}
+            transition={{ duration: 0.5 }}
+          >
+            {mood.emoji}
+          </motion.span>
+          <span className="text-sm font-medium handwritten" style={{ 
+            color: 'var(--boho-rust)',
+            fontSize: '1rem'
+          }}>
+            {mood.label}
+          </span>
+          <motion.div 
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: mood.color }}
+            animate={{ 
+              scale: selected === mood.label ? [1, 1.2, 1] : 1 
+            }}
+            transition={{ duration: 0.5, repeat: selected === mood.label ? Infinity : 0, repeatDelay: 2 }}
           />
-        </button>
+        </motion.button>
       ))}
     </div>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { format, addDays, subDays } from 'date-fns';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '@/components/ui/PageTransition';
 import JournalSection from '@/components/journal/JournalSection';
 import MoodSelector from '@/components/journal/MoodSelector';
@@ -285,11 +286,18 @@ export default function HomePage() {
             </div>
 
             {/* Date Navigation */}
-            <div className="card mb-6 sm:mb-8">
-              <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4">
+            <div className="card mb-6 sm:mb-8" style={{ position: 'relative', zIndex: 25 }}>
+              <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4" style={{ position: 'relative' }}>
                 <button
                   onClick={() => changeDate(-1)}
-                  className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
+                  className="p-2 rounded-xl transition-all duration-200"
+                  style={{
+                    color: 'var(--boho-olive)',
+                    background: 'rgba(139, 157, 131, 0.1)',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 26
+                  }}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -298,21 +306,37 @@ export default function HomePage() {
 
                 <button 
                   onClick={openDatePicker}
-                  className="text-center hover:bg-neutral-100 px-2 sm:px-4 py-2 rounded-lg transition-colors flex items-center gap-2 sm:gap-3"
+                  className="text-center px-2 sm:px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 sm:gap-3"
+                  style={{
+                    background: 'rgba(232, 220, 196, 0.5)',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 26
+                  }}
                 >
                   <div>
-                    <p className="text-base sm:text-lg font-semibold text-neutral-900">
+                    <p className="text-base sm:text-lg font-semibold" style={{ 
+                      fontFamily: 'Playfair Display, serif',
+                      color: 'var(--boho-rust)'
+                    }}>
                       {format(currentDate, 'EEEE, MMMM d')}
                     </p>
                   </div>
-                  <svg className="w-5 sm:w-6 h-5 sm:h-6 text-brand-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 sm:w-6 h-5 sm:h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--boho-terracotta)' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h14M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </button>
 
                 <button
                   onClick={() => changeDate(1)}
-                  className="p-2 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
+                  className="p-2 rounded-xl transition-all duration-200"
+                  style={{
+                    color: 'var(--boho-olive)',
+                    background: 'rgba(139, 157, 131, 0.1)',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 26
+                  }}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -356,9 +380,9 @@ export default function HomePage() {
               <div className="space-y-4 sm:space-y-6">
                 <JournalSection title="Today's Checklist" icon="✅">
                   {/* Checklist Items Container */}
-                  <div className="flex flex-col gap-3 sm:gap-4 bg-indigo-50 p-3 sm:p-4 rounded-lg border border-indigo-200 min-h-fit max-h-64 sm:max-h-80 md:max-h-96 overflow-hidden" style={{ width: '100%', maxWidth: '100%' }}>
+                  <div className="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl min-h-fit max-h-64 sm:max-h-80 md:max-h-96 overflow-hidden" style={{ width: '100%', maxWidth: '100%', background: 'rgba(232, 220, 196, 0.3)', border: '2px solid var(--boho-sand)', position: 'relative', zIndex: 12 }}>
                     {/* Items List with Scroll */}
-                    <div className="overflow-y-auto pr-2 space-y-2">
+                    <div className="overflow-y-auto pr-2 space-y-2" style={{ position: 'relative', zIndex: 13 }}>
                       {entry && entry.checklist_items.length > 0 ? (
                         entry.checklist_items.map((item, index) => (
                           <ChecklistItem
@@ -378,7 +402,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Add New Task Section */}
-                  <div className="border-t border-neutral-200 pt-3 sm:pt-4">
+                  <div className="border-t border-neutral-200 pt-3 sm:pt-4" style={{ position: 'relative', zIndex: 15 }}>
                     <div className="flex gap-2 w-full">
                       <input
                         type="text"
@@ -390,11 +414,24 @@ export default function HomePage() {
                           }
                         }}
                         placeholder="Add a new task..."
-                        className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-3 bg-indigo-50 border-2 border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-300 text-sm sm:text-base text-neutral-900 placeholder-neutral-500 font-medium transition-all"
+                        className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-3 rounded-xl focus:outline-none focus:ring-2 font-medium transition-all handwritten"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.9)',
+                          border: '2px solid var(--boho-sand)',
+                          color: 'var(--boho-rust)',
+                          position: 'relative',
+                          zIndex: 15,
+                          fontSize: '1.35rem',
+                          lineHeight: '1.6'
+                        }}
                       />
                       <button 
                         onClick={handleAddChecklistItem}
-                        className="flex-shrink-0 px-4 py-2 sm:px-6 sm:py-3 bg-brand-600 text-white rounded-lg text-sm sm:text-base font-semibold hover:bg-brand-700 active:bg-brand-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                        className="btn-primary flex-shrink-0 px-4 py-2 sm:px-6 sm:py-3"
+                        style={{
+                          position: 'relative',
+                          zIndex: 15
+                        }}
                       >
                         Add
                       </button>

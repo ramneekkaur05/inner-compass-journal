@@ -474,3 +474,91 @@ export async function deleteVisionBoardImage(imageUrl: string): Promise<boolean>
     return false;
   }
 }
+
+// ============================================
+// THOUGHTS
+// ============================================
+
+export async function getThoughts(userId: string): Promise<any[]> {
+  const { data, error } = await supabase
+    .from('thoughts')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching thoughts:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function createThought(
+  userId: string,
+  title: string,
+  content: string
+): Promise<any | null> {
+  console.log('=== createThought DB function called ===');
+  console.log('Input:', { userId, title, content });
+  
+  const { data, error } = await supabase
+    .from('thoughts')
+    .insert({
+      user_id: userId,
+      title,
+      content,
+    })
+    .select()
+    .single();
+
+  console.log('Supabase response:', { data, error });
+
+  if (error) {
+    console.error('Error creating thought:', error);
+    console.error('Error details:', error.message, error.code, error.details, error.hint);
+    return null;
+  }
+
+  return data;
+}
+
+export async function updateThought(
+  thoughtId: string,
+  title: string,
+  content: string
+): Promise<boolean> {
+  console.log('=== updateThought DB function ===');
+  console.log('Input:', { thoughtId, title, content });
+  
+  const { data, error } = await supabase
+    .from('thoughts')
+    .update({ title, content, updated_at: new Date().toISOString() })
+    .eq('id', thoughtId)
+    .select();
+
+  console.log('Update response:', { data, error });
+
+  if (error) {
+    console.error('Error updating thought:', error);
+    console.error('Error details:', error.message, error.code, error.details);
+    return false;
+  }
+
+  console.log('Update successful, updated rows:', data);
+  return true;
+}
+
+export async function deleteThought(thoughtId: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('thoughts')
+    .delete()
+    .eq('id', thoughtId);
+
+  if (error) {
+    console.error('Error deleting thought:', error);
+    return false;
+  }
+
+  return true;
+}

@@ -159,7 +159,7 @@ export default function GuidedReflectionsPage() {
           <div className="mt-8 space-y-6">
             <h2 className="text-xl font-semibold text-neutral-800">Your Reflections</h2>
             {reflections.map((reflection) => (
-              <div key={reflection.id} className="card">
+              <div key={reflection.id} className="card" style={{ background: 'linear-gradient(135deg, #F5F1E8 0%, #E8DCC4 100%)', borderColor: '#D4A574' }}>
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h3 className="text-xl font-semibold text-neutral-800">
@@ -193,7 +193,8 @@ export default function GuidedReflectionsPage() {
                     <textarea
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg bg-indigo-50 border border-indigo-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-300 transition-colors resize-none"
+                      className="w-full px-4 py-3 rounded-lg bg-indigo-50 border border-indigo-200 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-300 transition-colors resize-none handwritten"
+                      style={{ fontSize: '1.35rem', lineHeight: '1.8' }}
                       rows={8}
                       placeholder="Write your reflection..."
                     />
@@ -213,7 +214,7 @@ export default function GuidedReflectionsPage() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-neutral-800 whitespace-pre-wrap">{reflection.reflection}</p>
+                  <p className="text-neutral-800 whitespace-pre-wrap handwritten" style={{ fontSize: '1.35rem', lineHeight: '1.8' }}>{reflection.reflection}</p>
                 )}
               </div>
             ))}
@@ -325,9 +326,17 @@ function ReflectionForm({
         <p className="text-sm text-neutral-500">
           {savedReflection ? '✓ Auto-saving...' : 'Start writing to save'}
         </p>
-        <button onClick={handleSave} className="btn-primary" disabled={saving}>
-          {saving ? 'Saving...' : savedReflection ? 'Done' : 'Save Reflection'}
-        </button>
+        <div className="flex gap-3">
+          <button 
+            onClick={onCancel} 
+            className="btn-secondary"
+          >
+            Cancel
+          </button>
+          <button onClick={handleSave} className="btn-primary" disabled={saving}>
+            {saving ? 'Saving...' : savedReflection ? 'Done' : 'Save Reflection'}
+          </button>
+        </div>
       </div>
     </div>
   );

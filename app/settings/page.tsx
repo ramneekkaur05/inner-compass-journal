@@ -115,6 +115,7 @@ export default function SettingsPage() {
                   onChange={(e) => handleFieldChange('nickname', e.target.value)}
                   className="input-field"
                   placeholder="How should we call you?"
+                  style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10 }}
                 />
               </div>
 
@@ -128,6 +129,7 @@ export default function SettingsPage() {
                   className="textarea-calm"
                   placeholder="Your personal vision and mission..."
                   rows={4}
+                  style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10 }}
                 />
               </div>
 
@@ -135,12 +137,13 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-neutral-700 mb-2">
                   Current Identity Focus
                 </label>
-                <input
-                  type="text"
+                <textarea
                   value={profile.current_identity_focus || ''}
                   onChange={(e) => handleFieldChange('current_identity_focus', e.target.value)}
-                  className="input-field"
+                  className="textarea-calm"
                   placeholder="What identity are you cultivating?"
+                  rows={2}
+                  style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10, height: 'auto', minHeight: '100px', maxHeight: '200px' }}
                 />
               </div>
             </div>
@@ -159,6 +162,7 @@ export default function SettingsPage() {
                   value={profile.mood_baseline || 'Neutral'}
                   onChange={(e) => handleFieldChange('mood_baseline', e.target.value)}
                   className="input-field"
+                  style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10 }}
                 >
                   <option value="Excellent">Excellent</option>
                   <option value="Good">Good</option>
@@ -176,6 +180,7 @@ export default function SettingsPage() {
                   value={profile.timezone}
                   onChange={(e) => handleFieldChange('timezone', e.target.value)}
                   className="input-field"
+                  style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10 }}
                 >
                   <option value="America/New_York">Eastern Time (ET)</option>
                   <option value="America/Chicago">Central Time (CT)</option>

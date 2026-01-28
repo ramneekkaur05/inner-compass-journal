@@ -36,7 +36,7 @@ export default function TextArea({
       placeholder={placeholder}
       className="textarea-calm"
       style={{ 
-        lineHeight: '1.6',
+        lineHeight: '2',
         scrollbarGutter: 'stable',
         overflowY: 'auto',
         height: '280px',
@@ -45,7 +45,10 @@ export default function TextArea({
         resize: 'none',
         display: 'block',
         width: '100%',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        position: 'relative',
+        zIndex: 15,
+        pointerEvents: 'auto'
       }}
     />
   );

@@ -56,16 +56,25 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
       <div
         className="fixed inset-0 z-40 bg-black/20"
         onClick={onClose}
+        style={{ pointerEvents: 'auto' }}
       />
 
-      {/* Calendar Modal */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[95vw] sm:w-auto">
-        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 w-full sm:w-96 max-w-lg">
+      {/* Calendar Modal - positioned below the date button */}
+      <div className="absolute top-full left-0 right-0 mt-2 z-50 flex justify-center" style={{ pointerEvents: 'none' }}>
+        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 w-full sm:w-96 max-w-lg" style={{ 
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 241, 232, 0.98) 100%)',
+          border: '2px solid var(--boho-sand)',
+          pointerEvents: 'auto'
+        }}>
           {/* Header with Month/Year Selection */}
           <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
             <button
               onClick={handlePrevMonth}
-              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+              className="p-2 rounded-xl transition-colors"
+              style={{
+                background: 'rgba(139, 157, 131, 0.1)',
+                color: 'var(--boho-olive)'
+              }}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -80,7 +89,13 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
                   const newDate = new Date(displayDate.getFullYear(), parseInt(e.target.value));
                   setDisplayDate(newDate);
                 }}
-                className="px-3 py-1 rounded-lg border border-neutral-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-300 cursor-pointer hover:border-neutral-300"
+                className="px-3 py-1 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 cursor-pointer"
+                style={{
+                  border: '2px solid var(--boho-sand)',
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  color: 'var(--boho-rust)',
+                  fontFamily: 'Playfair Display, serif'
+                }}
               >
                 {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((month, idx) => (
                   <option key={month} value={idx}>
@@ -95,7 +110,13 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
                   const newDate = new Date(parseInt(e.target.value), displayDate.getMonth());
                   setDisplayDate(newDate);
                 }}
-                className="px-3 py-1 rounded-lg border border-neutral-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-300 cursor-pointer hover:border-neutral-300 max-h-40 overflow-y-auto"
+                className="px-3 py-1 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 cursor-pointer max-h-40 overflow-y-auto"
+                style={{
+                  border: '2px solid var(--boho-sand)',
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  color: 'var(--boho-rust)',
+                  fontFamily: 'Playfair Display, serif'
+                }}
               >
                 {Array.from({ length: 151 }, (_, i) => new Date().getFullYear() - 75 + i).map((year) => (
                   <option key={year} value={year}>
@@ -107,7 +128,11 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
 
             <button
               onClick={handleNextMonth}
-              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+              className="p-2 rounded-xl transition-colors"
+              style={{
+                background: 'rgba(139, 157, 131, 0.1)',
+                color: 'var(--boho-olive)'
+              }}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -118,7 +143,10 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
           {/* Weekday Headers */}
           <div className="grid grid-cols-7 gap-2 mb-2">
             {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-              <div key={day} className="text-center text-xs font-semibold text-neutral-600 py-2">
+              <div key={day} className="text-center text-xs font-semibold py-2" style={{ 
+                color: 'var(--boho-olive)',
+                fontFamily: 'Playfair Display, serif'
+              }}>
                 {day}
               </div>
             ))}
@@ -131,16 +159,17 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
                 key={index}
                 onClick={() => day !== null && handleDayClick(day)}
                 disabled={day === null}
-                className={`
-                  w-10 h-10 rounded-lg transition-all duration-200 font-medium text-sm
-                  ${
-                    day === null
-                      ? 'opacity-0 cursor-default'
-                      : isCurrentMonth && day === date.getDate()
-                      ? 'bg-brand-600 text-white hover:bg-brand-700 shadow-md'
-                      : 'text-neutral-700 hover:bg-neutral-100'
-                  }
-                `}
+                className="w-10 h-10 rounded-xl transition-all duration-150 font-medium text-sm"
+                style={{
+                  opacity: day === null ? 0 : 1,
+                  cursor: day === null ? 'default' : 'pointer',
+                  background: isCurrentMonth && day === date.getDate()
+                    ? 'linear-gradient(135deg, var(--boho-terracotta), var(--boho-rust))'
+                    : 'rgba(232, 220, 196, 0.3)',
+                  color: isCurrentMonth && day === date.getDate() ? 'white' : 'var(--boho-rust)',
+                  border: '1px solid var(--boho-sand)',
+                  fontFamily: 'Playfair Display, serif'
+                }}
               >
                 {day}
               </button>
@@ -148,10 +177,15 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
           </div>
 
           {/* Footer */}
-          <div className="flex gap-2 mt-6 pt-4 border-t border-neutral-200">
+          <div className="flex gap-2 mt-6 pt-4" style={{ borderTop: '2px solid var(--boho-sand)' }}>
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors font-medium"
+              className="flex-1 px-4 py-2 rounded-xl transition-colors font-medium"
+              style={{
+                background: 'rgba(139, 157, 131, 0.2)',
+                color: 'var(--boho-rust)',
+                fontFamily: 'Playfair Display, serif'
+              }}
             >
               Close
             </button>
@@ -161,7 +195,12 @@ export default function CalendarPicker({ date, onChange, onClose }: CalendarPick
                 onChange(today);
                 onClose();
               }}
-              className="flex-1 px-4 py-2 bg-brand-100 text-brand-700 hover:bg-brand-200 rounded-lg transition-colors font-medium"
+              className="flex-1 px-4 py-2 rounded-xl transition-colors font-medium"
+              style={{
+                background: 'linear-gradient(135deg, var(--boho-sage), var(--boho-olive))',
+                color: 'white',
+                fontFamily: 'Playfair Display, serif'
+              }}
             >
               Today
             </button>
