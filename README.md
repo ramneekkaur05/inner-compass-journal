@@ -1,5 +1,4 @@
-# 🌟 Inner Compass - Self Reflection Journaling Application
-##  🔴 Website link: https://inner-compass-journal.ve
+# 🌟 Intelligent Journal - Premium Journaling Application
 
 A production-ready, full-stack intelligent journaling application built with Next.js, React, TypeScript, and Supabase.
 
@@ -7,14 +6,12 @@ A production-ready, full-stack intelligent journaling application built with Nex
 
 - **📝 Daily Journaling**: Mood tracking, gratitude, goals, and daily checklists with auto-save
 - **🌟 Vision Board**: Visualize your dreams with images and affirmations
-- **🧠 Identity Shifting**: Define who you're becoming with core values and empowering beliefs
 - **✉️ Future Letters**: Write letters to your future self with unlock dates
 - **🎯 Goals & Progress**: Track your journey with real-time statistics
 - **🌿 Guided Reflections**: Deep introspection with themed prompts
 - **📊 Insights**: Visualize patterns with mood trends and completion charts
 - **⚙️ Settings**: Personalize your experience with auto-saving preferences
 - **🌻 Thought Letters**: Write and save thoughts as beautiful letter envelopes with philosophy quotes
-- **📜 Crumpled Paper Texture**: Enhanced UI with realistic crumpled paper background for authentic journal feel
 
 ## 🚀 Tech Stack
 
