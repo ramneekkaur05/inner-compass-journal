@@ -180,6 +180,7 @@ export default function Navigation() {
           <NavItem href="/" icon="📝" label="Daily Review" isExpanded={isExpanded} />
           <NavItem href="/thoughts" icon="💭" label="Thoughts" isExpanded={isExpanded} />
           <NavItem href="/guided-reflections" icon="🌿" label="Reflections" isExpanded={isExpanded} />
+          <NavItem href="/year-highlights" icon="🌟" label="Year Highlights" isExpanded={isExpanded} />
           <NavItem href="/vision-board" icon="🌠" label="Vision Board" isExpanded={isExpanded} />
           <NavItem href="/future-letters" icon="✉️" label="Future Letters" isExpanded={isExpanded} />
           <NavItem href="/goals" icon="🎯" label="Goals" isExpanded={isExpanded} />
@@ -233,6 +234,7 @@ export default function Navigation() {
               <NavItem href="/" icon="📝" label="Daily Review" isExpanded={true} />
               <NavItem href="/thoughts" icon="💭" label="Thoughts" isExpanded={true} />
               <NavItem href="/guided-reflections" icon="🌿" label="Reflections" isExpanded={true} />
+              <NavItem href="/year-highlights" icon="🌟" label="Year Highlights" isExpanded={true} />
               <NavItem href="/vision-board" icon="🌠" label="Vision Board" isExpanded={true} />
               <NavItem href="/future-letters" icon="✉️" label="Future Letters" isExpanded={true} />
               <NavItem href="/goals" icon="🎯" label="Goals" isExpanded={true} />

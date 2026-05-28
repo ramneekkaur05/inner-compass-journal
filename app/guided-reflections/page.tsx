@@ -146,8 +146,8 @@ export default function GuidedReflectionsPage() {
               <ReflectionForm
                 theme={selectedTheme}
                 userId={user.id}
-                onSave={(reflection) => {
-                  setReflections([reflection, ...reflections]);
+                onSave={async () => {
+                  await loadReflections(user.id);
                   setSelectedTheme(null);
                 }}
                 onCancel={() => setSelectedTheme(null)}
@@ -241,37 +241,56 @@ function ReflectionForm({
 }: {
   theme: typeof themes[0];
   userId: string;
-  onSave: (reflection: GuidedReflection) => void;
+  onSave: () => Promise<void>;
   onCancel: () => void;
 }) {
   const [reflection, setReflection] = useState('');
   const [saving, setSaving] = useState(false);
   const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
   const [savedReflection, setSavedReflection] = useState<GuidedReflection | null>(null);
+  const [saveMessage, setSaveMessage] = useState('');
+  const [saveError, setSaveError] = useState('');
 
-  const handleSave = async () => {
-    if (!reflection.trim()) return;
+  const handleSave = async (event?: React.FormEvent) => {
+    event?.preventDefault();
+
+    const trimmedReflection = reflection.trim();
+    if (!trimmedReflection) return;
 
     setSaving(true);
+    setSaveMessage('');
+    setSaveError('');
 
-    if (savedReflection) {
-      // Update existing
-      await updateGuidedReflection(savedReflection.id, { reflection });
-    } else {
+    try {
+      if (savedReflection) {
+        // Update existing
+        const success = await updateGuidedReflection(savedReflection.id, { reflection: trimmedReflection });
+        if (!success) {
+          setSaveError('Could not save changes. Please try again.');
+          return;
+        }
+        setSaveMessage('Reflection updated.');
+        return;
+      }
+
       // Create new
       const newReflection = await createGuidedReflection(userId, {
         theme: theme.theme,
         prompt: theme.prompt,
-        reflection,
+        reflection: trimmedReflection,
       });
 
-      if (newReflection) {
-        setSavedReflection(newReflection);
-        onSave(newReflection);
+      if (!newReflection) {
+        setSaveError('Could not save your reflection. Please try again.');
+        return;
       }
-    }
 
-    setSaving(false);
+      setSavedReflection(newReflection);
+      setSaveMessage('Reflection saved.');
+      await onSave();
+    } finally {
+      setSaving(false);
+    }
   };
 
   const autoSave = () => {
@@ -294,9 +313,18 @@ function ReflectionForm({
     }
   }, [reflection]);
 
+  useEffect(() => {
+    return () => {
+      if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+      }
+    };
+  }, [autoSaveTimer]);
+
   return (
-    <div className="card">
+    <form className="card" onSubmit={handleSave}>
       <button
+        type="button"
         onClick={onCancel}
         className="mb-4 text-neutral-600 hover:text-neutral-800 flex items-center gap-2"
       >
@@ -323,21 +351,22 @@ function ReflectionForm({
       />
 
       <div className="flex items-center justify-between mt-4">
-        <p className="text-sm text-neutral-500">
-          {savedReflection ? '✓ Auto-saving...' : 'Start writing to save'}
+        <p className={`text-sm ${saveError ? 'text-red-600' : 'text-neutral-500'}`}>
+          {saveError || saveMessage || (savedReflection ? '✓ Auto-saving...' : 'Start writing to save')}
         </p>
         <div className="flex gap-3">
           <button 
+            type="button"
             onClick={onCancel} 
             className="btn-secondary"
           >
             Cancel
           </button>
-          <button onClick={handleSave} className="btn-primary" disabled={saving}>
-            {saving ? 'Saving...' : savedReflection ? 'Done' : 'Save Reflection'}
+          <button type="submit" className="btn-primary" disabled={saving || !reflection.trim()}>
+            {saving ? 'Saving Reflection...' : savedReflection ? 'Done' : 'Submit Reflection'}
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

@@ -9,6 +9,7 @@ A production-ready, full-stack intelligent journaling application built with Nex
 - **✉️ Future Letters**: Write letters to your future self with unlock dates
 - **🎯 Goals & Progress**: Track your journey with real-time statistics
 - **🌿 Guided Reflections**: Deep introspection with themed prompts
+- **🌟 Year Highlights**: Build an interactive timeline of your most meaningful life events
 - **📊 Insights**: Visualize patterns with mood trends and completion charts
 - **⚙️ Settings**: Personalize your experience with auto-saving preferences
 - **🌻 Thought Letters**: Write and save thoughts as beautiful letter envelopes with philosophy quotes
@@ -163,6 +164,7 @@ All user input is automatically saved to Supabase with debouncing (800ms delay) 
 | **Future Letters** | Write and lock letters to your future self |
 | **Goals** | Progress tracking with stats and timeline |
 | **Reflections** | Themed guided reflections (Release, Growth, etc.) |
+| **Year Highlights** | Interactive yearly timeline of major personal moments |
 | **Insights** | Charts showing mood trends and task completion |
 | **Settings** | Profile customization and preferences |
 
@@ -208,13 +210,14 @@ npm run lint
 
 ## 📝 Database Schema
 
-The app uses 6 main tables:
+The app uses 7 main tables:
 - `profiles` - User profiles and preferences
 - `journal_entries` - Daily journal entries
 - `vision_board_items` - Vision board cards
 - `identity_statements` - Identity shifting statements
 - `future_letters` - Letters to future self
 - `guided_reflections` - Themed reflections
+- `year_highlights` - Memorable yearly events and milestones
 
 All tables have RLS policies and user_id foreign keys.
 

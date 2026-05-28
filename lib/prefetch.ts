@@ -5,7 +5,8 @@ import {
   getVisionBoardItems, 
   getIdentityStatements,
   getGuidedReflections,
-  getFutureLetters
+  getFutureLetters,
+  getYearHighlights
 } from './db';
 
 /**
@@ -21,6 +22,7 @@ export async function prefetchPageData(userId: string) {
       getIdentityStatements(userId),
       getGuidedReflections(userId),
       getFutureLetters(userId),
+      getYearHighlights(userId),
     ]);
   } catch (error) {
     console.warn('Prefetch error (non-critical):', error);

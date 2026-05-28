@@ -5,6 +5,7 @@ import type { VisionBoardItem } from '@/entities/VisionBoardItem';
 import type { IdentityStatement } from '@/entities/IdentityStatement';
 import type { FutureLetter } from '@/entities/FutureLetter';
 import type { GuidedReflection } from '@/entities/GuidedReflection';
+import type { YearHighlight } from '../entities/YearHighlight';
 import type { UserProfile } from '@/entities/UserProfile';
 
 // ============================================
@@ -355,11 +356,12 @@ export async function createGuidedReflection(
       user_id: userId,
       ...reflection,
     })
-    .select()
+    .select('*')
     .single();
 
   if (error) {
     console.error('Error creating guided reflection:', error);
+    console.error('Guided reflection insert details:', error.message, error.details, error.hint);
     return null;
   }
 
@@ -380,6 +382,89 @@ export async function updateGuidedReflection(
     return false;
   }
 
+  return true;
+}
+
+// ============================================
+// YEAR HIGHLIGHTS
+// ============================================
+
+export async function getYearHighlights(userId: string, year?: number): Promise<YearHighlight[]> {
+  const targetYear = year ?? new Date().getFullYear();
+  const cacheKey = `year_highlights_${userId}_${targetYear}`;
+  const cached = appCache.get<YearHighlight[]>(cacheKey);
+  if (cached) return cached;
+
+  const { data, error } = await supabase
+    .from('year_highlights')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('year', targetYear)
+    .order('event_date', { ascending: true })
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching year highlights:', error);
+    return [];
+  }
+
+  const result = data || [];
+  appCache.set(cacheKey, result, 5 * 60 * 1000);
+  return result;
+}
+
+export async function createYearHighlight(
+  userId: string,
+  highlight: Omit<YearHighlight, 'id' | 'user_id' | 'created_at' | 'updated_at'>
+): Promise<YearHighlight | null> {
+  const { data, error } = await supabase
+    .from('year_highlights')
+    .insert({
+      user_id: userId,
+      ...highlight,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating year highlight:', error);
+    return null;
+  }
+
+  appCache.invalidateByPrefix(`year_highlights_${userId}_`);
+  return data;
+}
+
+export async function updateYearHighlight(
+  highlightId: string,
+  updates: Partial<YearHighlight>
+): Promise<boolean> {
+  const { error } = await supabase
+    .from('year_highlights')
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq('id', highlightId);
+
+  if (error) {
+    console.error('Error updating year highlight:', error);
+    return false;
+  }
+
+  appCache.invalidateByPrefix('year_highlights_');
+  return true;
+}
+
+export async function deleteYearHighlight(highlightId: string): Promise<boolean> {
+  const { error } = await supabase
+    .from('year_highlights')
+    .delete()
+    .eq('id', highlightId);
+
+  if (error) {
+    console.error('Error deleting year highlight:', error);
+    return false;
+  }
+
+  appCache.invalidateByPrefix('year_highlights_');
   return true;
 }
 
