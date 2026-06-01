@@ -8,13 +8,14 @@ interface ChecklistItemProps {
   item: ChecklistItemType;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onUpdate: (id: string, text: string) => void;
+  onUpdate: (id: string, updates: { text?: string; category?: 'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous' }) => void;
   index: number;
 }
 
 export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, index }: ChecklistItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(item.text);
+  const [selectedCategory, setSelectedCategory] = useState<ChecklistItemType['category']>(item.category ?? 'Miscellaneous');
 
   useEffect(() => {
     setText(item.text);
@@ -22,10 +23,17 @@ export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, inde
 
   const handleBlur = () => {
     setIsEditing(false);
-    if (text.trim() && text !== item.text) {
-      onUpdate(item.id, text);
-    } else if (!text.trim()) {
+    if (!text.trim()) {
       setText(item.text);
+      return;
+    }
+
+    const updates: { text?: string; category?: ChecklistItemType['category'] } = {};
+    if (text !== item.text) updates.text = text;
+    if (selectedCategory !== (item.category ?? 'Miscellaneous')) updates.category = selectedCategory;
+
+    if (Object.keys(updates).length > 0) {
+      onUpdate(item.id, updates);
     }
   };
 
@@ -89,26 +97,42 @@ export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, inde
       </motion.button>
 
       {isEditing ? (
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onBlur={handleBlur}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleBlur();
-            if (e.key === 'Escape') {
-              setText(item.text);
-              setIsEditing(false);
-            }
-          }}
-          className="flex-1 min-w-0 px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl focus:outline-none focus:ring-2 text-sm sm:text-base font-medium handwritten"
-          style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            border: '2px solid var(--boho-sage)',
-            color: 'var(--boho-rust)'
-          }}
-          autoFocus
-        />
+        <div className="flex-1 flex items-center gap-2">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value as any)}
+            className="input-field !w-36"
+            style={{ minWidth: 120 }}
+          >
+            <option>Health</option>
+            <option>Study</option>
+            <option>Creativity</option>
+            <option>Networking</option>
+            <option>Miscellaneous</option>
+          </select>
+
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleBlur();
+              if (e.key === 'Escape') {
+                setText(item.text);
+                setSelectedCategory(item.category ?? 'Miscellaneous');
+                setIsEditing(false);
+              }
+            }}
+            className="flex-1 min-w-0 px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl focus:outline-none focus:ring-2 text-sm sm:text-base font-medium handwritten"
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              border: '2px solid var(--boho-sage)',
+              color: 'var(--boho-rust)'
+            }}
+            autoFocus
+          />
+        </div>
       ) : (
         <div
           onClick={() => setIsEditing(true)}

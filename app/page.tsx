@@ -196,10 +196,10 @@ export default function HomePage() {
     updateJournalEntry(entry.id, { checklist_items: updatedItems });
   };
 
-  const handleChecklistUpdate = (itemId: string, text: string) => {
+  const handleChecklistUpdate = (itemId: string, updates: { text?: string; category?: 'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous' }) => {
     if (!entry) return;
     const updatedItems = entry.checklist_items.map((item) =>
-      item.id === itemId ? { ...item, text } : item
+      item.id === itemId ? { ...item, ...updates } : item
     );
     const updatedEntry = { ...entry, checklist_items: updatedItems };
     setEntry(updatedEntry);
