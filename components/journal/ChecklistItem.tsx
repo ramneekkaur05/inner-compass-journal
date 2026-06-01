@@ -10,9 +10,10 @@ interface ChecklistItemProps {
   onDelete: (id: string) => void;
   onUpdate: (id: string, updates: { text?: string; category?: 'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous' }) => void;
   index: number;
+  showCategory?: boolean;
 }
 
-export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, index }: ChecklistItemProps) {
+export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, index, showCategory = true }: ChecklistItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(item.text);
   const [selectedCategory, setSelectedCategory] = useState<ChecklistItemType['category']>(item.category ?? 'Miscellaneous');
@@ -145,7 +146,7 @@ export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, inde
             zIndex: 15
           }}
         >
-          {item.category && (
+          {showCategory && item.category && (
             <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(139,157,131,0.08)', color: 'var(--boho-olive)', border: '1px solid rgba(139,157,131,0.12)' }}>
               {item.category}
             </span>

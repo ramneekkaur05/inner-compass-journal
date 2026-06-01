@@ -428,6 +428,7 @@ export default function HomePage() {
                                     key={item.id}
                                     item={item}
                                     index={idx + 1}
+                                    showCategory={false}
                                     onToggle={handleChecklistToggle}
                                     onDelete={handleChecklistDelete}
                                     onUpdate={handleChecklistUpdate}
