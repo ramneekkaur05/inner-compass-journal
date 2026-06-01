@@ -416,10 +416,10 @@ export default function HomePage() {
                         checklistCategories.map((cat) => {
                           const items = entry.checklist_items.filter((i) => (i as any).category ? (i as any).category === cat : cat === 'Miscellaneous');
                           return (
-                            <div key={cat} className="py-1">
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-sm font-semibold text-neutral-600">{cat}</h4>
-                                <span className="text-xs text-neutral-500">{items.length} task{items.length !== 1 ? 's' : ''}</span>
+                            <div key={cat} className="py-2 px-3 mb-3 rounded-lg border border-neutral-200 bg-white/40">
+                              <div className="flex items-center justify-between mb-3">
+                                <h4 className="text-base sm:text-lg font-semibold text-neutral-700">{cat}</h4>
+                                <span className="text-sm text-neutral-500">{items.length} task{items.length !== 1 ? 's' : ''}</span>
                               </div>
 
                               {items.length > 0 ? (
