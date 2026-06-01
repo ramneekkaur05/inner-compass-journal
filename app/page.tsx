@@ -102,6 +102,11 @@ export default function HomePage() {
   const [checklistFilter, setChecklistFilter] = useState('');
 
   const checklistCategories = ['Health', 'Study', 'Creativity', 'Networking', 'Miscellaneous'] as const;
+  const [categoryInputs, setCategoryInputs] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    ['Health', 'Study', 'Creativity', 'Networking', 'Miscellaneous'].forEach((c) => (initial[c] = ''));
+    return initial;
+  });
 
   useEffect(() => {
     initializePage();
@@ -229,6 +234,26 @@ export default function HomePage() {
     const updatedEntry = { ...entry, checklist_items: updatedItems };
     setEntry(updatedEntry);
     setNewChecklistItem('');
+    updateJournalEntry(entry.id, { checklist_items: updatedItems });
+  };
+
+  const addChecklistItemForCategory = (category: string) => {
+    if (!entry) return;
+    const value = (categoryInputs[category] || '').trim();
+    if (!value) return;
+
+    const newItem: ChecklistItemType = {
+      id: Date.now().toString(),
+      text: value,
+      completed: false,
+      created_at: new Date().toISOString(),
+      category: category as any,
+    };
+
+    const updatedItems = [...entry.checklist_items, newItem];
+    const updatedEntry = { ...entry, checklist_items: updatedItems };
+    setEntry(updatedEntry);
+    setCategoryInputs((s) => ({ ...s, [category]: '' }));
     updateJournalEntry(entry.id, { checklist_items: updatedItems });
   };
 
@@ -411,6 +436,26 @@ export default function HomePage() {
                               ) : (
                                 <div className="text-neutral-400 text-sm py-2">No tasks in this category.</div>
                               )}
+
+                              <div className="mt-2 flex gap-2 items-center">
+                                <input
+                                  type="text"
+                                  value={categoryInputs[cat] || ''}
+                                  onChange={(e) => setCategoryInputs((s) => ({ ...s, [cat]: e.target.value }))}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') addChecklistItemForCategory(cat);
+                                  }}
+                                  placeholder={`Add a new ${cat} task...`}
+                                  className="flex-1 min-w-0 px-3 py-2 sm:px-3 sm:py-2 rounded-lg focus:outline-none handwritten"
+                                  style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(0,0,0,0.06)' }}
+                                />
+                                <button
+                                  onClick={() => addChecklistItemForCategory(cat)}
+                                  className="px-3 py-2 rounded-md bg-amber-600 text-white"
+                                >
+                                  Add
+                                </button>
+                              </div>
                             </div>
                           );
                         })
