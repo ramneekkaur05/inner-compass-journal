@@ -96,8 +96,6 @@ export default function HomePage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [entry, setEntry] = useState<JournalEntry | null>(null);
-  const [newChecklistItem, setNewChecklistItem] = useState('');
-  const [newChecklistCategory, setNewChecklistCategory] = useState<'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous'>('Miscellaneous');
   const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
   const [checklistFilter, setChecklistFilter] = useState('');
 
@@ -219,23 +217,7 @@ export default function HomePage() {
     updateJournalEntry(entry.id, { checklist_items: updatedItems });
   };
 
-  const handleAddChecklistItem = () => {
-    if (!entry || !newChecklistItem.trim()) return;
-
-    const newItem: ChecklistItemType = {
-      id: Date.now().toString(),
-      text: newChecklistItem.trim(),
-      completed: false,
-      created_at: new Date().toISOString(),
-      category: newChecklistCategory,
-    };
-
-    const updatedItems = [...entry.checklist_items, newItem];
-    const updatedEntry = { ...entry, checklist_items: updatedItems };
-    setEntry(updatedEntry);
-    setNewChecklistItem('');
-    updateJournalEntry(entry.id, { checklist_items: updatedItems });
-  };
+  
 
   const addChecklistItemForCategory = (category: string) => {
     if (!entry) return;
@@ -467,53 +449,7 @@ export default function HomePage() {
                       )}
                     </div>
 
-                  {/* Add New Task Section */}
-                  <div className="border-t border-neutral-200 pt-3 sm:pt-4" style={{ position: 'relative', zIndex: 15 }}>
-                    <div className="flex gap-2 w-full items-center">
-                      <select
-                        value={newChecklistCategory}
-                        onChange={(e) => setNewChecklistCategory(e.target.value as any)}
-                        className="input-field !w-40"
-                        style={{ minWidth: 140 }}
-                      >
-                        {checklistCategories.map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-
-                      <input
-                        type="text"
-                        value={newChecklistItem}
-                        onChange={(e) => setNewChecklistItem(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleAddChecklistItem();
-                          }
-                        }}
-                        placeholder="Add a new task..."
-                        className="flex-1 min-w-0 px-3 py-2 sm:px-4 sm:py-3 rounded-xl focus:outline-none focus:ring-2 font-medium transition-all handwritten"
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.9)',
-                          border: '2px solid var(--boho-sand)',
-                          color: 'var(--boho-rust)',
-                          position: 'relative',
-                          zIndex: 15,
-                          fontSize: '1.35rem',
-                          lineHeight: '1.6'
-                        }}
-                      />
-                      <button 
-                        onClick={handleAddChecklistItem}
-                        className="btn-primary flex-shrink-0 px-4 py-2 sm:px-6 sm:py-3"
-                        style={{
-                          position: 'relative',
-                          zIndex: 15
-                        }}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
+                  
                 </div>
               </JournalSection>
 
