@@ -110,9 +110,9 @@ export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, inde
           autoFocus
         />
       ) : (
-        <span
+        <div
           onClick={() => setIsEditing(true)}
-          className="flex-1 min-w-0 cursor-pointer transition-all duration-200 font-medium break-words handwritten"
+          className="flex-1 min-w-0 cursor-pointer transition-all duration-200 font-medium break-words handwritten flex items-center gap-3"
           style={{
             color: item.completed ? 'var(--boho-clay)' : 'var(--boho-rust)',
             textDecoration: item.completed ? 'line-through' : 'none',
@@ -121,8 +121,13 @@ export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, inde
             zIndex: 15
           }}
         >
-          {item.text}
-        </span>
+          {item.category && (
+            <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(139,157,131,0.08)', color: 'var(--boho-olive)', border: '1px solid rgba(139,157,131,0.12)' }}>
+              {item.category}
+            </span>
+          )}
+          <span className="flex-1 break-words">{item.text}</span>
+        </div>
       )}
 
       <motion.button

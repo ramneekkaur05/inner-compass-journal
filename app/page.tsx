@@ -97,8 +97,11 @@ export default function HomePage() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [entry, setEntry] = useState<JournalEntry | null>(null);
   const [newChecklistItem, setNewChecklistItem] = useState('');
+  const [newChecklistCategory, setNewChecklistCategory] = useState<'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous'>('Miscellaneous');
   const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
   const [checklistFilter, setChecklistFilter] = useState('');
+
+  const checklistCategories = ['Health', 'Study', 'Creativity', 'Networking', 'Miscellaneous'] as const;
 
   useEffect(() => {
     initializePage();
@@ -219,6 +222,7 @@ export default function HomePage() {
       text: newChecklistItem.trim(),
       completed: false,
       created_at: new Date().toISOString(),
+      category: newChecklistCategory,
     };
 
     const updatedItems = [...entry.checklist_items, newItem];
@@ -382,28 +386,55 @@ export default function HomePage() {
                   {/* Checklist Items Container */}
                   <div className="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl min-h-fit max-h-64 sm:max-h-80 md:max-h-96 overflow-hidden" style={{ width: '100%', maxWidth: '100%', background: 'rgba(232, 220, 196, 0.3)', border: '2px solid var(--boho-sand)', position: 'relative', zIndex: 12 }}>
                     {/* Items List with Scroll */}
-                    <div className="overflow-y-auto pr-2 space-y-2" style={{ position: 'relative', zIndex: 13 }}>
-                      {entry && entry.checklist_items.length > 0 ? (
-                        entry.checklist_items.map((item, index) => (
-                          <ChecklistItem
-                            key={item.id}
-                            item={item}
-                            index={index + 1}
-                            onToggle={handleChecklistToggle}
-                            onDelete={handleChecklistDelete}
-                            onUpdate={handleChecklistUpdate}
-                          />
-                        ))
+                    <div className="overflow-y-auto pr-2 space-y-4" style={{ position: 'relative', zIndex: 13 }}>
+                      {entry ? (
+                        checklistCategories.map((cat) => {
+                          const items = entry.checklist_items.filter((i) => (i as any).category ? (i as any).category === cat : cat === 'Miscellaneous');
+                          return (
+                            <div key={cat} className="py-1">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="text-sm font-semibold text-neutral-600">{cat}</h4>
+                                <span className="text-xs text-neutral-500">{items.length} task{items.length !== 1 ? 's' : ''}</span>
+                              </div>
+
+                              {items.length > 0 ? (
+                                items.map((item, idx) => (
+                                  <ChecklistItem
+                                    key={item.id}
+                                    item={item}
+                                    index={idx + 1}
+                                    onToggle={handleChecklistToggle}
+                                    onDelete={handleChecklistDelete}
+                                    onUpdate={handleChecklistUpdate}
+                                  />
+                                ))
+                              ) : (
+                                <div className="text-neutral-400 text-sm py-2">No tasks in this category.</div>
+                              )}
+                            </div>
+                          );
+                        })
                       ) : (
                         <div className="text-center py-6">
                           <p className="text-neutral-400 text-sm">No tasks yet. Add one to get started!</p>
                         </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
                   {/* Add New Task Section */}
                   <div className="border-t border-neutral-200 pt-3 sm:pt-4" style={{ position: 'relative', zIndex: 15 }}>
-                    <div className="flex gap-2 w-full">
+                    <div className="flex gap-2 w-full items-center">
+                      <select
+                        value={newChecklistCategory}
+                        onChange={(e) => setNewChecklistCategory(e.target.value as any)}
+                        className="input-field !w-40"
+                        style={{ minWidth: 140 }}
+                      >
+                        {checklistCategories.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+
                       <input
                         type="text"
                         value={newChecklistItem}

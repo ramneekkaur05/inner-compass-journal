@@ -18,4 +18,5 @@ export interface ChecklistItem {
   text: string;
   completed: boolean;
   created_at: string;
+  category?: 'Health' | 'Study' | 'Creativity' | 'Networking' | 'Miscellaneous';
 }
