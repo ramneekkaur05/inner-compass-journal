@@ -453,30 +453,16 @@ export default function HomePage() {
                 </div>
               </JournalSection>
 
-                <JournalSection title="Daily Recap" icon="📖">
-                  <TextArea
-                    value={entry?.daily_recap || ''}
-                    onChange={(value) => handleFieldChange('daily_recap', value)}
-                    placeholder="What happened today? What stood out to you?"
-                  />
-                </JournalSection>
+                {/* moved to right column per layout request */}
+              </div>
 
+              {/* Right Column */}
+              <div className="space-y-4 sm:space-y-6">
                 <JournalSection title="Gratitude" icon="🙏">
                   <TextArea
                     value={entry?.gratitude || ''}
                     onChange={(value) => handleFieldChange('gratitude', value)}
                     placeholder="What are you grateful for today?"
-                  />
-                </JournalSection>
-              </div>
-
-              {/* Right Column */}
-              <div className="space-y-4 sm:space-y-6">
-                <JournalSection title="Current Goals & Desires" icon="✨">
-                  <TextArea
-                    value={entry?.goals_desires || ''}
-                    onChange={(value) => handleFieldChange('goals_desires', value)}
-                    placeholder="What are you working towards? What do you desire?"
                   />
                 </JournalSection>
 
@@ -485,6 +471,22 @@ export default function HomePage() {
                     value={entry?.learnings || ''}
                     onChange={(value) => handleFieldChange('learnings', value)}
                     placeholder="What did you learn today? Any insights or discoveries?"
+                  />
+                </JournalSection>
+
+                <JournalSection title="Daily Recap" icon="📖">
+                  <TextArea
+                    value={entry?.daily_recap || ''}
+                    onChange={(value) => handleFieldChange('daily_recap', value)}
+                    placeholder="What happened today? What stood out to you?"
+                  />
+                </JournalSection>
+
+                <JournalSection title="Current Goals & Desires" icon="✨">
+                  <TextArea
+                    value={entry?.goals_desires || ''}
+                    onChange={(value) => handleFieldChange('goals_desires', value)}
+                    placeholder="What are you working towards? What do you desire?"
                   />
                 </JournalSection>
               </div>
