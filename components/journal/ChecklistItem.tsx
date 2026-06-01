@@ -13,7 +13,7 @@ interface ChecklistItemProps {
   showCategory?: boolean;
 }
 
-export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, index, showCategory = true }: ChecklistItemProps) {
+export default function ChecklistItem({ item, onToggle, onDelete, onUpdate, index, showCategory = false }: ChecklistItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(item.text);
   const [selectedCategory, setSelectedCategory] = useState<ChecklistItemType['category']>(item.category ?? 'Miscellaneous');
